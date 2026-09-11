@@ -1,0 +1,20 @@
+﻿# Lead Collector
+
+Capture leads from forms, enrich them, and send them to a CRM or spreadsheet.
+
+## What this workflow does
+
+- Trigger automation with a defined event
+- Process incoming data
+- Route actions to the required app or service
+- Save or notify the result
+
+## Setup
+
+1. Import the workflow JSON. 2. Connect your form or webhook source. 3. Map the incoming fields to your lead store. 4. Route new contacts to the CRM.
+
+## Production tips
+
+- Store secrets in n8n credentials, not in the workflow JSON.
+- Test with a small sample before enabling real automation.
+- Add retry logic and error handling when integrating with external services.
