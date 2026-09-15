@@ -1,5 +1,5 @@
 {
-  "name": "My workflow 2",
+  "name": "Task Reminder - Google Sheets",
   "nodes": [
     {
       "parameters": {
@@ -17,24 +17,20 @@
         0,
         0
       ],
-      "id": "3d50b4a7-c3d7-422d-83fd-543cedb4eab5",
+      "id": "schedule-trigger",
       "name": "Schedule Trigger"
     },
     {
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1j6J8Sq_v1gjCCQ1jUH7XBUmQqRK5oYmCf12drKRQNW0",
-          "mode": "list",
-          "cachedResultName": "tasks",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j6J8Sq_v1gjCCQ1jUH7XBUmQqRK5oYmCf12drKRQNW0/edit?usp=drivesdk"
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Feuille 1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1j6J8Sq_v1gjCCQ1jUH7XBUmQqRK5oYmCf12drKRQNW0/edit#gid=0"
+          "value": "YOUR_SHEET_NAME",
+          "mode": "name"
         },
         "options": {}
       },
@@ -44,14 +40,8 @@
         224,
         0
       ],
-      "id": "3ed3ecf4-0ef0-47aa-9b0c-70f65d2cbf10",
-      "name": "Get row(s) in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "Fs1bezZr5uVe4cRE",
-          "name": "Google Sheets account"
-        }
-      }
+      "id": "google-sheets",
+      "name": "Get row(s) in sheet"
     },
     {
       "parameters": {
@@ -64,12 +54,12 @@
           },
           "conditions": [
             {
-              "id": "6c043e63-ea6f-4d07-ab46-cd1ec3ed942e",
-              "leftValue": "={{ $json.status }}",
-              "rightValue": "=pending",
+              "id": "deadline-condition",
+              "leftValue": "={{ DateTime.fromISO($json[\"due-date\"]).startOf('day') <= $now.startOf('day') }}",
+              "rightValue": true,
               "operator": {
-                "type": "string",
-                "operation": "equals"
+                "type": "boolean",
+                "operation": "true"
               }
             }
           ],
@@ -83,15 +73,15 @@
         448,
         0
       ],
-      "id": "acf04f9e-0c82-4678-ae4d-075186f0875a",
-      "name": "If"
+      "id": "if-deadline",
+      "name": "IF - Deadline Reached"
     },
     {
       "parameters": {
         "sendTo": "={{ $json.email }}",
         "subject": "=Reminder: {{ $json.task }}",
         "emailType": "text",
-        "message": "=Hello,\n\nThis is your task reminder.\n\nTask: {{ $json.task }}\n\nDue date: {{ $json[\"due-date\"] }}\n\nStatus: {{ $json.status }}\n\nPlease complete this task before the due date.\n\nBest regards,\nn8n",
+        "message": "=Hello,\n\nThis is your task reminder.\n\nTask: {{ $json.task }}\n\nDue date: {{ $json[\"due-date\"] }}\n\nStatus: {{ $json.status }}\n\nPlease complete this task as soon as possible.\n\nBest regards,\nn8n",
         "options": {
           "appendAttribution": false
         }
@@ -100,20 +90,12 @@
       "typeVersion": 2.2,
       "position": [
         672,
-        -62.5
+        -62
       ],
-      "id": "428afc18-9e6f-48c8-8ff1-8ea495f552a7",
-      "name": "Send a message",
-      "webhookId": "60b31d06-0efa-45cf-9e60-c36960d1304e",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "ARBzHgfYhOYRRh6B",
-          "name": "Gmail account"
-        }
-      }
+      "id": "gmail-reminder",
+      "name": "Send Reminder"
     }
   ],
-  "pinData": {},
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -130,36 +112,30 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "IF - Deadline Reached",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "IF - Deadline Reached": {
       "main": [
         [
           {
-            "node": "Send a message",
+            "node": "Send Reminder",
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     }
   },
+  "pinData": {},
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
+    "executionOrder": "v1"
   },
-  "versionId": "cee05595-b58d-4abc-8ebf-ac551e6223e1",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "1590579ecd03886c916b3096c743617922d772ca37d863474e0d9a5edb2adc0d"
-  },
-  "nodeGroups": [],
-  "id": "svLFYTy274d997ao",
   "tags": []
 }
