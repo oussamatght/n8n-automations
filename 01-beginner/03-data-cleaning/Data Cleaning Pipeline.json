@@ -1,0 +1,79 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "310323f0-9ca5-48f2-9b88-414648d81200",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      name: \"oussama\",\n      email: \" OUSSAMA@GMAIL.COM \"\n    }\n  },\n  {\n    json: {\n      name: \"OUSSAMA\",\n      email: \"oussama@gmail.com\"\n    }\n  },\n  {\n    json: {\n      name: \" Oussama \",\n      email: \" Oussama@gmail.com \"\n    }\n  },\n  {\n    json: {\n      name: \"AHMED\",\n      email: \" AHMED@GMAIL.COM \"\n    }\n  },\n  {\n    json: {\n      name: \" ahmed \",\n      email: \"ahmed@gmail.com \"\n    }\n  },\n  {\n    json: {\n      name: \"   \",\n      email: \"test@gmail.com\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a69ed23b-3cb5-4dc6-a214-dadacf2a0565",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cleanedUsers = $input.all()\n  .filter(item => item.json.name.trim() !== \"\")\n  .map(item => {\n\n    const name = item.json.name\n      .trim()\n      .toLowerCase();\n\n    const cleanName =\n      name.charAt(0).toUpperCase() +\n      name.slice(1);\n\n    const cleanEmail =\n      item.json.email\n        .trim()\n        .toLowerCase();\n\n    return {\n      json: {\n        name: cleanName,\n        email: cleanEmail\n      }\n    };\n  });\n\nreturn cleanedUsers;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "47d0cbec-195a-43c5-a879-00499acbc2c2",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "cd641d35-7859-4fd5-a532-f698121ddcb9",
+  "meta": {
+    "instanceId": "1590579ecd03886c916b3096c743617922d772ca37d863474e0d9a5edb2adc0d"
+  },
+  "nodeGroups": [],
+  "id": "cj7X87KcnnW93FvW",
+  "tags": []
+}
